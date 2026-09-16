@@ -1,0 +1,9 @@
+bin/
+obj/
+artifacts/
+work/
+outputs/
+WORKING_CONTEXT.md
+*.user
+*.suo
+*.qdpart

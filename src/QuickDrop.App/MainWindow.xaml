@@ -1,0 +1,146 @@
+<Window x:Class="QuickDrop.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="QuickDrop - 局域网文件直传"
+        Width="1040" Height="760" MinWidth="900" MinHeight="650"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource PageBrush}"
+        FontFamily="Segoe UI, Microsoft YaHei UI">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="36">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="24" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="24" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="QuickDrop" FontSize="34" FontWeight="Bold" Foreground="{StaticResource InkBrush}" />
+                    <TextBlock Text="两台电脑，输入短码，文件直接传。" Margin="0,6,0,0" FontSize="16" Foreground="{StaticResource MutedBrush}" />
+                </StackPanel>
+                <Border Grid.Column="1" Background="#E6F6ED" CornerRadius="16" Padding="14,8" VerticalAlignment="Center">
+                    <TextBlock Text="不登录 · 不上云 · TLS 加密" Foreground="#16794A" FontWeight="SemiBold" />
+                </Border>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Background="{StaticResource CardBrush}" CornerRadius="16" Padding="26">
+                    <StackPanel>
+                        <TextBlock Text="发送文件" FontSize="22" FontWeight="Bold" Foreground="{StaticResource InkBrush}" />
+                        <TextBlock Text="选择多个文件，或一次发送整个文件夹。" Margin="0,6,0,18" Foreground="{StaticResource MutedBrush}" />
+
+                        <WrapPanel Margin="0,0,0,12">
+                            <Button Content="选择文件" Click="ChooseFiles_Click" IsEnabled="{Binding CanStart}" />
+                            <Button Content="选择文件夹" Click="ChooseFolder_Click" IsEnabled="{Binding CanStart}" />
+                            <Button Content="清空" Click="ClearSelection_Click" Style="{StaticResource SecondaryButton}" IsEnabled="{Binding CanStart}" />
+                        </WrapPanel>
+
+                        <TextBlock Text="{Binding SelectionSummary}" FontWeight="SemiBold" Foreground="{StaticResource InkBrush}" Margin="0,0,0,8" />
+                        <ListBox ItemsSource="{Binding SelectedItems}" Height="118" BorderBrush="#EAECF0" Background="#FAFBFC" Padding="6" />
+
+                        <Button Content="生成配对码并开始发送" Margin="0,18,0,14" Click="StartSending_Click" IsEnabled="{Binding CanStart}" />
+
+                        <Border Background="#F0F4FF" CornerRadius="12" Padding="18">
+                            <StackPanel>
+                                <TextBlock Text="配对码" Foreground="{StaticResource MutedBrush}" HorizontalAlignment="Center" />
+                                <TextBlock Text="{Binding PairingCode}" FontFamily="Consolas" FontSize="34" FontWeight="Bold"
+                                           Foreground="#3158C9" HorizontalAlignment="Center" Margin="0,4,0,0" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Background="{StaticResource CardBrush}" CornerRadius="16" Padding="26">
+                    <StackPanel>
+                        <TextBlock Text="接收文件" FontSize="22" FontWeight="Bold" Foreground="{StaticResource InkBrush}" />
+                        <TextBlock Text="输入发送方屏幕上的 6 位数字。" Margin="0,6,0,18" Foreground="{StaticResource MutedBrush}" />
+
+                        <TextBlock Text="配对码" FontWeight="SemiBold" Foreground="{StaticResource InkBrush}" Margin="0,0,0,7" />
+                        <TextBox Text="{Binding ReceiveCode, UpdateSourceTrigger=PropertyChanged}" MaxLength="6" FontFamily="Consolas"
+                                 FontSize="25" FontWeight="Bold" HorizontalContentAlignment="Center" />
+
+                        <TextBlock Text="保存到" FontWeight="SemiBold" Foreground="{StaticResource InkBrush}" Margin="0,20,0,7" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" Text="{Binding DestinationFolder, UpdateSourceTrigger=PropertyChanged}" />
+                            <Button Grid.Column="1" Content="浏览" Margin="8,0,0,0" Click="ChooseDestination_Click"
+                                    Style="{StaticResource SecondaryButton}" IsEnabled="{Binding CanStart}" />
+                        </Grid>
+
+                        <Border Background="#FFF8E7" CornerRadius="10" Padding="14" Margin="0,18,0,0">
+                            <TextBlock Text="发送方会看到这台电脑的名称，并需要手动允许连接。" TextWrapping="Wrap" Foreground="#7A5916" />
+                        </Border>
+
+                        <Button Content="查找设备并接收" Margin="0,23,0,0" Click="StartReceiving_Click" IsEnabled="{Binding CanStart}" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Border Grid.Row="4" Background="{StaticResource CardBrush}" CornerRadius="16" Padding="24">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="16" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="14" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="{Binding StatusText}" FontSize="18" FontWeight="Bold" Foreground="{StaticResource InkBrush}" />
+                            <TextBlock Text="{Binding DetailText}" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <Border Grid.Column="1" Background="#EEF2F7" CornerRadius="12" Padding="12,6" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding RouteText}" Foreground="#475467" FontWeight="SemiBold" />
+                        </Border>
+                    </Grid>
+
+                    <ProgressBar Grid.Row="2" Height="12" Minimum="0" Maximum="100" Value="{Binding ProgressPercent}"
+                                 Foreground="{StaticResource AccentBrush}" Background="#E9EDF5" BorderThickness="0" />
+
+                    <Grid Grid.Row="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="当前：" Foreground="{StaticResource MutedBrush}" />
+                            <TextBlock Text="{Binding CurrentFile}" Foreground="{StaticResource InkBrush}" MaxWidth="310" TextTrimming="CharacterEllipsis" />
+                            <TextBlock Text="   ·   " Foreground="#98A2B3" />
+                            <TextBlock Text="{Binding TransferredText}" Foreground="{StaticResource InkBrush}" />
+                            <TextBlock Text="   ·   " Foreground="#98A2B3" />
+                            <TextBlock Text="{Binding SpeedText}" Foreground="{StaticResource InkBrush}" />
+                            <TextBlock Text="   ·   " Foreground="#98A2B3" />
+                            <TextBlock Text="{Binding EtaText}" Foreground="{StaticResource InkBrush}" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Button Content="重试" Click="Retry_Click" IsEnabled="{Binding CanRetry}" Style="{StaticResource SecondaryButton}" />
+                            <Button Content="取消" Click="Cancel_Click" IsEnabled="{Binding IsBusy}" Background="#D92D20" Margin="0" />
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+</Window>

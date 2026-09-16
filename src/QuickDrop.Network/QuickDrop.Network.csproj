@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\QuickDrop.Core\QuickDrop.Core.csproj" />
+  </ItemGroup>
+</Project>

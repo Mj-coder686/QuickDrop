@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>QuickDrop</AssemblyName>
+    <RootNamespace>QuickDrop.App</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Version>0.1.0</Version>
+    <FileVersion>0.1.0.0</FileVersion>
+    <InformationalVersion>0.1.0</InformationalVersion>
+    <Product>QuickDrop</Product>
+    <Description>Temporary encrypted LAN file transfer for Windows.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\QuickDrop.Core\QuickDrop.Core.csproj" />
+    <ProjectReference Include="..\QuickDrop.Network\QuickDrop.Network.csproj" />
+  </ItemGroup>
+</Project>
