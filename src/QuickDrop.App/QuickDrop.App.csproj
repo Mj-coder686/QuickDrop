@@ -6,9 +6,9 @@
     <AssemblyName>QuickDrop</AssemblyName>
     <RootNamespace>QuickDrop.App</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Version>0.1.0</Version>
-    <FileVersion>0.1.0.0</FileVersion>
-    <InformationalVersion>0.1.0</InformationalVersion>
+    <Version>0.1.1</Version>
+    <FileVersion>0.1.1.0</FileVersion>
+    <InformationalVersion>0.1.1</InformationalVersion>
     <Product>QuickDrop</Product>
     <Description>Temporary encrypted LAN file transfer for Windows.</Description>
   </PropertyGroup>

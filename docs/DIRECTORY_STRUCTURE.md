@@ -31,6 +31,7 @@ QuickDrop/
 ├─ scripts/
 │  ├─ build.ps1
 │  ├─ test.ps1
+│  ├─ smoke-test.ps1
 │  └─ publish.ps1
 └─ artifacts/
    └─ win-x64/      # 生成物，不提交

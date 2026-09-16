@@ -4,7 +4,7 @@ QuickDrop 是一个面向学生的 Windows 局域网大文件直传工具。它�
 
 ## 下载
 
-- [下载 QuickDrop v0.1.0 Windows x64](https://github.com/Mj-coder686/QuickDrop/releases/download/v0.1.0/QuickDrop-win-x64.zip)
+- [下载 QuickDrop v0.1.1 Windows x64](https://github.com/Mj-coder686/QuickDrop/releases/download/v0.1.1/QuickDrop-win-x64.zip)
 - [查看最新版本](https://github.com/Mj-coder686/QuickDrop/releases/latest)
 
 下载 ZIP 后解压，直接运行 `QuickDrop.exe`。
@@ -40,11 +40,13 @@ QuickDrop 是一个面向学生的 Windows 局域网大文件直传工具。它�
 ```powershell
 .\scripts\build.ps1
 .\scripts\test.ps1
+.\scripts\smoke-test.ps1
 .\scripts\publish.ps1
 ```
 
 - 构建：`scripts/build.ps1`
 - 运行全部自动测试：`scripts/test.ps1`
+- 启动并持续观察 UI 进程：`scripts/smoke-test.ps1`
 - 生成 Windows x64 自包含单文件版本：`scripts/publish.ps1`
 - 从源码启动：`scripts/run.ps1`
 
