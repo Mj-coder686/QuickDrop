@@ -23,7 +23,7 @@ public partial class App : Application
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        WriteLog("QuickDrop 0.1.1 starting.");
+        WriteLog("QuickDrop 0.1.2 starting.");
         base.OnStartup(e);
     }
 

@@ -18,6 +18,7 @@ internal static class Program
         ("File and folder manifest", TestManifestAsync),
         ("Framed protocol", TestFrameProtocolAsync),
         ("Progress calculations", TestProgressAsync),
+        ("Per-interface directed broadcasts", TestDirectedBroadcastsAsync),
         ("LAN discovery", TestLanDiscoveryAsync),
         ("TLS transfer, SHA-256, folders, and resume", TestEndToEndResumeAsync),
         ("Integrity failure retries automatically", TestIntegrityRetryAsync)
@@ -120,6 +121,25 @@ internal static class Program
         Check.InRange(progress.Fraction, 0.249, 0.251, "Progress fraction is wrong.");
         Check.True(progress.BytesPerSecond > 0, "Speed must be positive after bytes are transferred.");
         Check.True(progress.EstimatedRemaining is not null, "ETA should be available after transfer begins.");
+        return Task.CompletedTask;
+    }
+
+    private static Task TestDirectedBroadcastsAsync()
+    {
+        Check.Equal(
+            "10.219.255.255",
+            LanNetworkInterfaces.CalculateBroadcastAddress(System.Net.IPAddress.Parse("10.219.40.11"), 16).ToString(),
+            "The Wi-Fi /16 directed broadcast is wrong.");
+        Check.Equal(
+            "192.168.11.255",
+            LanNetworkInterfaces.CalculateBroadcastAddress(System.Net.IPAddress.Parse("192.168.11.1"), 24).ToString(),
+            "The virtual adapter /24 directed broadcast is wrong.");
+        Check.Equal(
+            "10.20.30.40",
+            LanNetworkInterfaces.CalculateBroadcastAddress(System.Net.IPAddress.Parse("10.20.30.40"), 32).ToString(),
+            "A /32 address should remain unchanged.");
+        Check.Throws<ArgumentOutOfRangeException>(() =>
+            LanNetworkInterfaces.CalculateBroadcastAddress(System.Net.IPAddress.Parse("10.0.0.1"), 33));
         return Task.CompletedTask;
     }
 

@@ -29,30 +29,72 @@ public sealed class LanAdvertiser
             session.Sender);
         var bytes = JsonSerializer.SerializeToUtf8Bytes(advertisement, FrameProtocol.JsonOptions);
 
-        using var udp = new UdpClient(AddressFamily.InterNetwork) { EnableBroadcast = true };
-        udp.Client.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.MulticastTimeToLive, 1);
-        var targets = new[]
-        {
-            new IPEndPoint(MulticastAddress, DiscoveryPort),
-            new IPEndPoint(IPAddress.Broadcast, DiscoveryPort),
-            new IPEndPoint(IPAddress.Loopback, DiscoveryPort)
-        };
+        var channels = CreateChannels();
 
-        while (!cancellationToken.IsCancellationRequested && !session.IsExpired)
+        try
         {
-            foreach (var target in targets)
+            while (!cancellationToken.IsCancellationRequested && !session.IsExpired)
             {
-                try
+                foreach (var channel in channels)
                 {
-                    await udp.SendAsync(bytes, target, cancellationToken).ConfigureAwait(false);
+                    foreach (var target in channel.Targets)
+                    {
+                        try
+                        {
+                            await channel.Client.SendAsync(bytes, target, cancellationToken).ConfigureAwait(false);
+                        }
+                        catch (SocketException)
+                        {
+                            // One unavailable adapter must not disable discovery on the others.
+                        }
+                    }
                 }
-                catch (SocketException)
-                {
-                    // A disabled multicast/broadcast path should not disable the other discovery paths.
-                }
-            }
 
-            await Task.Delay(TimeSpan.FromMilliseconds(650), cancellationToken).ConfigureAwait(false);
+                await Task.Delay(TimeSpan.FromMilliseconds(650), cancellationToken).ConfigureAwait(false);
+            }
+        }
+        finally
+        {
+            foreach (var channel in channels)
+            {
+                channel.Client.Dispose();
+            }
         }
     }
+
+    private static IReadOnlyList<AdvertisementChannel> CreateChannels()
+    {
+        var channels = new List<AdvertisementChannel>();
+        foreach (var binding in LanNetworkInterfaces.GetActiveIPv4Interfaces())
+        {
+            try
+            {
+                var udp = new UdpClient(new IPEndPoint(binding.Address, 0)) { EnableBroadcast = true };
+                udp.Client.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.MulticastTimeToLive, 1);
+                udp.Client.SetSocketOption(
+                    SocketOptionLevel.IP,
+                    SocketOptionName.MulticastInterface,
+                    binding.Address.GetAddressBytes());
+                channels.Add(new AdvertisementChannel(
+                    udp,
+                    [
+                        new IPEndPoint(MulticastAddress, DiscoveryPort),
+                        new IPEndPoint(binding.BroadcastAddress, DiscoveryPort)
+                    ]));
+            }
+            catch (SocketException)
+            {
+                // The adapter may disappear between enumeration and binding.
+            }
+        }
+
+        var loopback = new UdpClient(new IPEndPoint(IPAddress.Loopback, 0));
+        channels.Add(new AdvertisementChannel(
+            loopback,
+            [new IPEndPoint(IPAddress.Loopback, DiscoveryPort)]));
+
+        return channels;
+    }
+
+    private sealed record AdvertisementChannel(UdpClient Client, IReadOnlyList<IPEndPoint> Targets);
 }

@@ -4,7 +4,7 @@ QuickDrop 是一个面向学生的 Windows 局域网大文件直传工具。它�
 
 ## 下载
 
-- [下载 QuickDrop v0.1.1 Windows x64](https://github.com/Mj-coder686/QuickDrop/releases/download/v0.1.1/QuickDrop-win-x64.zip)
+- [下载 QuickDrop v0.1.2 Windows x64](https://github.com/Mj-coder686/QuickDrop/releases/download/v0.1.2/QuickDrop-win-x64.zip)
 - [查看最新版本](https://github.com/Mj-coder686/QuickDrop/releases/latest)
 
 下载 ZIP 后解压，直接运行 `QuickDrop.exe`。

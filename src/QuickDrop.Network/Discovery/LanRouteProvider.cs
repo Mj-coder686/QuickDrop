@@ -80,13 +80,30 @@ public sealed class LanRouteProvider : IRouteProvider
         udp.Client.ExclusiveAddressUse = false;
         udp.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
         udp.Client.Bind(new IPEndPoint(IPAddress.Any, LanAdvertiser.DiscoveryPort));
-        try
+        var joinedInterface = false;
+        foreach (var binding in LanNetworkInterfaces.GetActiveIPv4Interfaces())
         {
-            udp.JoinMulticastGroup(LanAdvertiser.MulticastAddress);
+            try
+            {
+                udp.JoinMulticastGroup(LanAdvertiser.MulticastAddress, binding.Address);
+                joinedInterface = true;
+            }
+            catch (SocketException)
+            {
+                // Keep joining on the remaining adapters; broadcast remains available.
+            }
         }
-        catch (SocketException)
+
+        if (!joinedInterface)
         {
-            // Broadcast and loopback discovery remain available.
+            try
+            {
+                udp.JoinMulticastGroup(LanAdvertiser.MulticastAddress);
+            }
+            catch (SocketException)
+            {
+                // Broadcast and loopback discovery remain available.
+            }
         }
 
         return udp;
