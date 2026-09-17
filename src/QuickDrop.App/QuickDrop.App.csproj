@@ -6,14 +6,18 @@
     <AssemblyName>QuickDrop</AssemblyName>
     <RootNamespace>QuickDrop.App</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Version>0.1.2</Version>
-    <FileVersion>0.1.2.0</FileVersion>
-    <InformationalVersion>0.1.2</InformationalVersion>
+    <ApplicationIcon>Assets\QuickDrop.ico</ApplicationIcon>
+    <Version>0.1.3</Version>
+    <FileVersion>0.1.3.0</FileVersion>
+    <InformationalVersion>0.1.3</InformationalVersion>
     <Product>QuickDrop</Product>
     <Description>Temporary encrypted LAN file transfer for Windows.</Description>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\QuickDrop.Core\QuickDrop.Core.csproj" />
     <ProjectReference Include="..\QuickDrop.Network\QuickDrop.Network.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\QuickDrop.ico" />
   </ItemGroup>
 </Project>

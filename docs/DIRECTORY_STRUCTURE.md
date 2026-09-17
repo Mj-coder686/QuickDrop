@@ -20,10 +20,13 @@ QuickDrop/
 │  │  ├─ Security/
 │  │  └─ Transfer/
 │  └─ QuickDrop.App/
+│     ├─ Assets/
+│     │  ├─ QuickDrop.ico
+│     │  └─ QuickDrop-Icon.png
 │     ├─ ViewModels/
 │     ├─ Views/
 │     ├─ Converters/
-│     └─ Assets/
+│     └─ MainWindow.xaml
 ├─ tests/
 │  └─ QuickDrop.Tests/
 ├─ packaging/

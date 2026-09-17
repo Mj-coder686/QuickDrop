@@ -1,10 +1,12 @@
 # QuickDrop
 
+<img src="src/QuickDrop.App/Assets/QuickDrop-Icon.png" alt="QuickDrop 黑色 M 图标" width="96" />
+
 QuickDrop 是一个面向学生的 Windows 局域网大文件直传工具。它不是网盘：文件从一台电脑直接发送到另一台电脑，不上传到云端，不需要账号。
 
 ## 下载
 
-- [下载 QuickDrop v0.1.2 Windows x64](https://github.com/Mj-coder686/QuickDrop/releases/download/v0.1.2/QuickDrop-win-x64.zip)
+- [下载 QuickDrop v0.1.3 Windows x64](https://github.com/Mj-coder686/QuickDrop/releases/download/v0.1.3/QuickDrop-win-x64.zip)
 - [查看最新版本](https://github.com/Mj-coder686/QuickDrop/releases/latest)
 
 下载 ZIP 后解压，直接运行 `QuickDrop.exe`。
@@ -20,6 +22,7 @@ QuickDrop 是一个面向学生的 Windows 局域网大文件直传工具。它�
 - `.qdpart` 断点续传；取消或断网后，下次使用同一保存位置可继续。
 - SHA-256 完整性校验，失败自动从头重试一次。
 - 实时进度、速度、剩余时间、取消和会话失败重试。
+- 自定义黑色“M”应用图标，显示在窗口、任务栏和可执行文件上。
 
 ## 直接使用
 
